@@ -27,6 +27,20 @@
 
                </textarea>
             </div>
+
+            <div class="card p-3">
+                @foreach ($tags as $tag)
+                    <div class="form-group form-check">
+                        <input {{(in_array($tag->id, old('tags', [])))?'checked':''}}
+                            name="tags[]"
+                            type="checkbox"
+                            class="form-check-input"
+                            id="tag_{{$tag->id}}"
+                            value="{{$tag->id}}"
+                        >
+                        <label class="form-check-label" for="tag_{{$tag->id}}">{{$tag->name}} {{$tag->id}}</label>
+                    </div>
+                @endforeach
             
             <button type="submit" class="btn btn-primary">Crea Post</button>
 
