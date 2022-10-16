@@ -24,6 +24,15 @@
             {{($post->category)?$post->category->name:'-'}}
             </span>
         </div>
+
+        <div>
+        <span class="font-weight-bold">Tags:
+
+            @foreach ($post->tags as $tag )
+                {{$tag->name}}
+            @endforeach
+
+        </div>
         <a href="{{route('admin.posts.index')}}" class="btn btn-info">Torna alla Lista</a>
     </div>
 

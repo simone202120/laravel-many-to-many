@@ -41,7 +41,7 @@
                         <label class="form-check-label" for="tag_{{$tag->id}}">{{$tag->name}} {{$tag->id}}</label>
                     </div>
                 @endforeach
-            
+            </div>
             <button type="submit" class="btn btn-primary">Crea Post</button>
 
         </form>

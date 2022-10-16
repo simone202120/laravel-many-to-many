@@ -65,7 +65,9 @@ class PostController extends Controller
 
         $post->save();
 
-        $post->tags()->sync($data['tags']);
+        if (array_key_exists('tags',$data)){
+            $post->tags()->sync($data['tags']);
+        }
 
         return redirect()->route('admin.posts.index')->with('status', 'Post creato con successo!');
 
@@ -91,7 +93,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories=category::all();
-        return view('admin.posts.edit', compact('post','categories'));
+        $tags=Tag::all();
+        return view('admin.posts.edit', compact('post','categories','tags'));
     }
 
     /**
@@ -106,7 +109,8 @@ class PostController extends Controller
         $request->validate([
             'title'=>'required|max:255',
             'content'=>'required|max:65535',
-            'category_id'=>'nullable|exists:categories,id'
+            'category_id'=>'nullable|exists:categories,id',
+            'tags'=>'exists:tags,id'
 
         ]);
 
@@ -117,6 +121,12 @@ class PostController extends Controller
         }
 
         $post->update($data);
+
+        if (array_key_exists('tags', $data)) {
+            $post->tags()->sync($data['tags']);
+        } else {
+            $post->tags()->detach();
+        }
 
         return redirect()->route('admin.posts.index')->with('status', 'Post aggiornato con successo!');
     }
@@ -149,6 +159,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $post->tags()->sync([]);
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('status', 'Cancellazione avvenuta con successo!');
